@@ -3,7 +3,7 @@ import { FLAGS, SETTING_KEYS } from "./module-config.js";
 
 export class TCAL {
 
-    static async importTransientActor(uuid) {
+    static async importTransientActor(uuid, options={}) {
         if (!uuid.startsWith("Compendium")) {
             Utils.consoleMessage("error", {
                 message: "importTransientActor was called with a uuid for a non-compendium actor.",
@@ -14,6 +14,16 @@ export class TCAL {
 
         let actor = await fromUuid(uuid);
         if (!actor) return;
+
+        options.preferExisting = true;
+        if (options.preferExisting) {
+            //The caller wants to reuse an existing actor if possible
+            //Search for a transient actor that matches our compendium actor
+            let existingActor = game.actors.find((a) => this.isTransientActor(a) && a._stats.compendiumSource == uuid);
+            if (existingActor) {
+                return existingActor;
+            }
+        }
 
         let updateData = {
             folder: Utils.getSetting(SETTING_KEYS.transientFolder),
