@@ -15,7 +15,6 @@ export class TCAL {
         let actor = await fromUuid(uuid);
         if (!actor) return;
 
-        options.preferExisting = true;
         if (options.preferExisting) {
             //The caller wants to reuse an existing actor if possible
             //Search for a transient actor that matches our compendium actor
