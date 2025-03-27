@@ -3,7 +3,7 @@ import { FLAGS, SETTING_KEYS } from "./module-config.js";
 
 export class TCAL {
 
-    static async importTransientActor(uuid, options={}) {
+    static async importTransientActor(uuid, options={}, updateData={}) {
         if (!uuid.startsWith("Compendium")) {
             Utils.consoleMessage("error", {
                 message: "importTransientActor was called with a uuid for a non-compendium actor.",
@@ -24,12 +24,10 @@ export class TCAL {
             }
         }
 
-        let updateData = {
-            folder: Utils.getSetting(SETTING_KEYS.transientFolder),
-            flags: { tcal: {} },
-        };
-
+        updateData.folder = Utils.getSetting(SETTING_KEYS.transientFolder);
+        updateData.flags = { tcal: {} };
         updateData.flags.tcal[FLAGS.isTransient] = true;
+        
         return await game.actors.importFromCompendium(game.packs.get(actor.pack), actor.id, updateData);
     }
 
