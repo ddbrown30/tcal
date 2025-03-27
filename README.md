@@ -6,13 +6,14 @@ This library adds API functionality that allows other modules to import actors f
 
 #### importTransientActor
 ```js
-game.tcal.importTransientActor(uuid, options)
+game.tcal.importTransientActor(uuid, options, updateData)
 ``` 
 This function is used to import an actor from a compendium as a transient actor. It takes a uuid for a compendium actor and returns the imported actor. It must be called with `await` if you want the returned value.
 
 * `uuid` The uuid for the compendium actor.
 * `options`
-  * `preferExisting` If true, `importTransientActor` will first look for an existing transient actor for the provided uuid and will return that. If one is not found, it will import the actor as normal. 
+  * `preferExisting` If true, `importTransientActor` will first look for an existing transient actor for the provided uuid and will return that. If one is not found, it will import the actor as normal.
+* `updateData` This object is passed on to the Foundry import function. See the Foundry API documentation for more info.
 
 
 #### isTransientActor
