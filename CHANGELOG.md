@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.0
+
+* Updated to v13
+
 ## 0.3.0
 
 * Added the ability to pass updateData to the import function
