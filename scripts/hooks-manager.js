@@ -51,9 +51,9 @@ export class HooksManager {
             let showFolder = game.user.isGM ? Utils.getSetting(SETTING_KEYS.showFolder) : false;
             if (!showFolder) {
                 let transientFolder = Utils.getSetting(SETTING_KEYS.transientFolder);
-                const folder = html.find(`.folder[data-folder-id="${transientFolder}"]`);
+                const folder = html.querySelector(`.folder[data-folder-id="${transientFolder}"]`);
                 folder.remove();
             }
         });
     }
-} 
+}
