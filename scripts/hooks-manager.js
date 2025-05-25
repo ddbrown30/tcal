@@ -27,7 +27,7 @@ export class HooksManager {
                 if (Utils.getModuleFlag(actor, FLAGS.isTransient)) {
                     let hasReference = false;
                     for (let scene of game.scenes) {
-                        if (scene.tokens.find((t) => t.actor.id == actor.id)) {
+                        if (scene.tokens.find((t) => t.actor?.id == actor.id)) {
                             hasReference = true;
                             break;
                         }
@@ -56,4 +56,4 @@ export class HooksManager {
             }
         });
     }
-} 
+}
