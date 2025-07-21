@@ -41,7 +41,7 @@ export class HooksManager {
 
             //If we haven't yet created the transient folder, do it now
             let transientFolder = Utils.getSetting(SETTING_KEYS.transientFolder);
-            if (!transientFolder) {
+            if (!transientFolder || !game.folders.get(transientFolder)) {
                 transientFolder = await Folder.create({ name: 'Transient Actors', type: 'Actor', parent: null });
                 Utils.setSetting(SETTING_KEYS.transientFolder, transientFolder.id);
             }
