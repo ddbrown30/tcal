@@ -41,7 +41,7 @@ export class HooksManager {
 
             //If we haven't yet created the transient folder, do it now
             let transientFolder = Utils.getSetting(SETTING_KEYS.transientFolder);
-            if (!transientFolder) {
+            if (!transientFolder || !game.folders.get(transientFolder)) {
                 transientFolder = await Folder.create({ name: 'Transient Actors', type: 'Actor', parent: null });
                 Utils.setSetting(SETTING_KEYS.transientFolder, transientFolder.id);
             }
@@ -51,7 +51,7 @@ export class HooksManager {
             let showFolder = game.user.isGM ? Utils.getSetting(SETTING_KEYS.showFolder) : false;
             if (!showFolder) {
                 let transientFolder = Utils.getSetting(SETTING_KEYS.transientFolder);
-                const folder = html.find(`.folder[data-folder-id="${transientFolder}"]`);
+                const folder = html.querySelector(`.folder[data-folder-id="${transientFolder}"]`);
                 folder.remove();
             }
         });
