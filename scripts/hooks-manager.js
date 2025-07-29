@@ -52,7 +52,7 @@ export class HooksManager {
             if (!showFolder) {
                 let transientFolder = Utils.getSetting(SETTING_KEYS.transientFolder);
                 const folder = html.querySelector(`.folder[data-folder-id="${transientFolder}"]`);
-                folder.remove();
+                folder?.remove();
             }
         });
     }
