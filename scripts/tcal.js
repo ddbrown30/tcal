@@ -24,11 +24,21 @@ export class TCAL {
             }
         }
 
+        // Save the current sidebar tab before importing
+        const currentTab = ui.sidebar.tabGroups.primary;
+
         updateData.folder = Utils.getSetting(SETTING_KEYS.transientFolder);
         updateData.flags = { tcal: {} };
         updateData.flags.tcal[FLAGS.isTransient] = true;
         
-        return await game.actors.importFromCompendium(game.packs.get(actor.pack), actor.id, updateData);
+        const importedActor = await game.actors.importFromCompendium(game.packs.get(actor.pack), actor.id, updateData);
+
+        // Restore the previous sidebar tab if it changed
+        if (currentTab && ui.sidebar.tabGroups.primary !== currentTab) {
+            ui.sidebar.activateTab(currentTab);
+        }
+
+        return importedActor;
     }
 
     static isTransientActor(actor) {
