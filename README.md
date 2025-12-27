@@ -24,6 +24,15 @@ This function can be used by other modules to know if an actor is transient. The
 
 * `actor` The actor to check
 
+#### deleteTransientActor
+```js
+await game.tcal.deleteTransientActor(actorOrId)
+``` 
+This function is used to delete a transient actor and all of its tokens from all scenes. It must be called with `await` as it returns a promise. The function includes safety checks to ensure only transient actors can be deleted.
+
+* `actorOrId` Either an Actor object or an actor ID (string) to delete
+* Returns `true` if the deletion was successful, `false` if there was an error (e.g., actor not found or not transient)
+
 ## Settings
 
 The library has a single setting which shows the hidden folder where the transient actors are stored. Ideally, this should never be needed but it does allow a way to do manual clean up if required. Even when enabled, the folder is only shown to GM users.

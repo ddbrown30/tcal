@@ -44,4 +44,48 @@ export class TCAL {
     static isTransientActor(actor) {
         return actor ? Utils.getModuleFlag(actor, FLAGS.isTransient) : false;
     }
-} 
+
+    /**
+     * Deletes a transient actor and all its tokens from scenes
+     * @param {Actor|string} actorOrId - The actor object or actor ID to delete
+     * @returns {Promise<boolean>} - True if deleted successfully, false otherwise
+     */
+    static async deleteTransientActor(actorOrId) {
+        let actor;
+
+        if (typeof actorOrId === 'string') {
+            actor = game.actors.get(actorOrId);
+        } else {
+            actor = actorOrId;
+        }
+
+        if (!actor) {
+            Utils.consoleMessage("error", {
+                message: "deleteTransientActor was called with an invalid actor.",
+                subStr: "actorOrId: " + actorOrId,
+            });
+            return false;
+        }
+
+        if (!this.isTransientActor(actor)) {
+            Utils.consoleMessage("error", {
+                message: "deleteTransientActor was called with a non-transient actor.",
+                subStr: "actor: " + actor.name + " (id: " + actor.id + ")",
+            });
+            return false;
+        }
+
+        // Delete all tokens of this actor from all scenes
+        for (let scene of game.scenes) {
+            const tokensToDelete = scene.tokens.filter(t => t.actor?.id === actor.id);
+            if (tokensToDelete.length > 0) {
+                await scene.deleteEmbeddedDocuments("Token", tokensToDelete.map(t => t.id));
+            }
+        }
+
+        // Delete the actor itself
+        await actor.delete();
+
+        return true;
+    }
+}
