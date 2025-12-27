@@ -15,6 +15,7 @@ export class HooksManager {
             // Expose API
             game.tcal.importTransientActor = TCAL.importTransientActor;
             game.tcal.isTransientActor = TCAL.isTransientActor;
+            game.tcal.deleteTransientActor = TCAL.deleteTransientActor;
 
             registerSettings();
         });
