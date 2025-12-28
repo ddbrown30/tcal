@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+* Added a workaround to mostly mitigate the tab switching that happens when importing an actor - @JamzTheMan
+
 ## 1.0.2
 
 * Fixed null error
