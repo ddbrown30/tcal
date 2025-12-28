@@ -24,14 +24,29 @@ export class TCAL {
             }
         }
 
+        // Save the current sidebar state before importing
+        const currentTab = ui.sidebar.tabGroups.primary;
+        const tabExpanded = ui.sidebar.expanded;
+
         updateData.folder = Utils.getSetting(SETTING_KEYS.transientFolder);
         updateData.flags = { tcal: {} };
         updateData.flags.tcal[FLAGS.isTransient] = true;
-        
-        return await game.actors.importFromCompendium(game.packs.get(actor.pack), actor.id, updateData);
+
+        const importedActor = await game.actors.importFromCompendium(game.packs.get(actor.pack), actor.id, updateData);
+
+        // Restore the previous sidebar state if it changed
+        if (currentTab && ui.sidebar.tabGroups.primary !== currentTab) {
+            ui.sidebar.changeTab(currentTab, "primary");
+        }
+
+        if (ui.sidebar.expanded != tabExpanded) {
+            ui.sidebar.toggleExpanded(tabExpanded);
+        }
+
+        return importedActor;
     }
 
     static isTransientActor(actor) {
         return actor ? Utils.getModuleFlag(actor, FLAGS.isTransient) : false;
     }
-} 
+}
