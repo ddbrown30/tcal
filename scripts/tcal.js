@@ -24,24 +24,15 @@ export class TCAL {
             }
         }
 
-        // Save the current sidebar state before importing
-        const currentTab = ui.sidebar.tabGroups.primary;
-        const tabExpanded = ui.sidebar.expanded;
-
         updateData.folder = Utils.getSetting(SETTING_KEYS.transientFolder);
         updateData.flags = { tcal: {} };
         updateData.flags.tcal[FLAGS.isTransient] = true;
 
-        const importedActor = await game.actors.importFromCompendium(game.packs.get(actor.pack), actor.id, updateData);
-
-        // Restore the previous sidebar state if it changed
-        if (currentTab && ui.sidebar.tabGroups.primary !== currentTab) {
-            ui.sidebar.changeTab(currentTab, "primary");
-        }
-
-        if (ui.sidebar.expanded != tabExpanded) {
-            ui.sidebar.toggleExpanded(tabExpanded);
-        }
+        //Note: This is essentially the contents of importFromCompendium but allows us to skip the call to directory.activate(). Replace this if they ever add an option
+        const actorDocument = await game.packs.get(actor.pack).getDocument(actor.id);
+        const sourceData = game.actors.fromCompendium(actorDocument);
+        const createData = foundry.utils.mergeObject(sourceData, updateData);
+        const importedActor = foundry.documents.Actor.create(createData, { fromCompendium: true });
 
         return importedActor;
     }
